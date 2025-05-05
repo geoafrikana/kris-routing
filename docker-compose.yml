@@ -2,8 +2,8 @@ name: kris-routing
 
 services:
   postgis:
-    image: postgis/postgis
-    container_name: kris-routing-postgis
+    image: pgrouting/pgrouting:17-3.5-3.7.3
+    container_name: kris-routing-pgrouting
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
