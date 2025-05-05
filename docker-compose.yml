@@ -5,8 +5,8 @@ services:
     image: postgis/postgis
     container-name: kris-routing-postgis
     environment:
-      - POSTGRES_DB: kris
-      - POSTGRES_USER: kris
+      - POSTGRES_DB: ${POSTGRES_DB}
+      - POSTGRES_USER: ${POSTGRES_USER}
       - POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - 5432:5432
