@@ -9,13 +9,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: instantiate db
-        run: docker compose up -d
       
       - name: activate extensions
         run: |
+          docker compose up -d
           psql \
-          "postgresql://$POSTGRES_USER:$PGPASSWORD@localhost:5432/kris" \
+          "postgresql://$POSTGRES_USER:$PGPASSWORD@localhost:5432/$POSTGRES_USER" \
           -c "CREATE EXTENSION postgis; CREATE EXTENSION hstore; CREATE EXTENSION pgrouting;"
 
