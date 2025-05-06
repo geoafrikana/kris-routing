@@ -1,19 +1,29 @@
 name: Build and test Kris Routing
 
 on:
-  push
+  push:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
       - uses: actions/checkout@v3
-      
-      - name: activate extensions
-        run: |
-          docker compose up -d
-          psql \
-          "postgresql://$POSTGRES_USER:$PGPASSWORD@localhost:5432/$POSTGRES_USER" \
-          -c "CREATE EXTENSION postgis; CREATE EXTENSION hstore; CREATE EXTENSION pgrouting;"
 
+      - name: Start PostgreSQL with Docker Compose
+        run: docker compose up -d
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -p 5432 -U $POSTGRES_USER; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+
+      - name: Enable PostGIS, hstore, and pgRouting extensions
+        run: |
+          psql \
+            "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_DB" \
+            -c "CREATE EXTENSION IF NOT EXISTS postgis;
+                CREATE EXTENSION IF NOT EXISTS hstore;
+                CREATE EXTENSION IF NOT EXISTS pgrouting;"
