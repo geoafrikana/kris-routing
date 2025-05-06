@@ -37,8 +37,8 @@ jobs:
       
       - name: Install tools
         run: |
-          apt install osm2pgsql
-          apt install osmium-tool
+          sudo apt install -y osm2pgsql
+          sudo apt install -y osmium-tool
       
       - name: ETL Yaounde data
         run: |
