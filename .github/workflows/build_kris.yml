@@ -1,4 +1,4 @@
-Name: Build and test Kris Routing
+name: Build and test Kris Routing
 
 on:
   push
