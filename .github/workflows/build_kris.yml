@@ -37,14 +37,22 @@ jobs:
       
       - name: Install tools
         run: |
-          sudo apt install -y osm2pgsql
+          sudo apt install osmctools
+          sudo apt install osm2pgrouting
           sudo apt install -y osmium-tool
       
       - name: ETL Yaounde data
         run: |
           wget $CAMEROON_PBF_URI
-          osmium extract -b $YAOUNDE_BOUNDING_BOX cameroon-latest.osm.pbf -o yaounde.pbf
-          PGPASSWORD=$PGPASSWORD osm2pgsql \
-           --host localhost -U $POSTGRES_USER \
-            --database $POSTGRES_DB --verbose  \
-            --hstore-all --create yaounde.pbf
+          
+          osmium extract -b $YAOUNDE_BOUNDING_BOX \
+             cameroon-latest.osm.pbf -o yaounde.pbf
+
+          osmconvert yaounde.pbf \
+            --drop-author --drop-version \
+            --out-osm -o=yaounde_reduc.osm
+          
+          osm2pgrouting --f yaounde_reduc.osm \
+            --dbname $POSTGRES_DB \
+            --username $POSTGRES_USER --clean \
+              -W $PGPASSWORD
