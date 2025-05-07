@@ -44,3 +44,7 @@ jobs:
         run: |
           wget $CAMEROON_PBF_URI
           osmium extract -b $YAOUNDE_BOUNDING_BOX cameroon-latest.osm.pbf -o yaounde.pbf
+          PGPASSWORD=$PGPASSWORD osm2pgsql \
+           --host localhost -U $POSTGRES_USER \
+            --database $POSTGRES_DB --verbose  \
+            --hstore-all --create yaounde.pbf
