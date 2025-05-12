@@ -31,9 +31,8 @@ jobs:
         run: |
           psql \
             "postgresql://$POSTGRES_USER:$PGPASSWORD@localhost:5432/$POSTGRES_DB" \
-            -c "CREATE EXTENSION IF NOT EXISTS postgis;
-                CREATE EXTENSION IF NOT EXISTS hstore;
-                CREATE EXTENSION IF NOT EXISTS pgrouting;"
+            -c "CREATE EXTENSION IF NOT EXISTS hstore;
+                CREATE EXTENSION IF NOT EXISTS pgrouting CASCADE;"
       
       - name: Install tools
         run: |
