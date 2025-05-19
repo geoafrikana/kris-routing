@@ -1,0 +1,17 @@
+*{
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding: 0
+}
+
+#form{
+    background-color: green;
+    padding: 5px;
+}
+
+#map{
+    height: calc(100vh - 30px);
+    width: 100vw
+}
