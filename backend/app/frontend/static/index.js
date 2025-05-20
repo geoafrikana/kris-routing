@@ -21,7 +21,7 @@ form.addEventListener('submit', function (e) {
     dest_lat = parseFloat(document.getElementById('dest_lat').value);
     dest_lon = parseFloat(document.getElementById('dest_lng').value);
 
-    fetch('http://localhost:8000/route/', {
+    fetch('/route/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
