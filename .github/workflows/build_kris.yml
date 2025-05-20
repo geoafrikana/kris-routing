@@ -39,6 +39,8 @@ jobs:
           sudo apt install osmctools
           sudo apt install osm2pgrouting
           sudo apt install -y osmium-tool
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          uv python install 3.12
       
       - name: ETL Yaounde data
         run: |
@@ -58,10 +60,7 @@ jobs:
       
       - name: Run tests
         run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          uv python install 3.12
           cd backend
           uv sync --dev
-          source .venv/Scripts/activate
           export PYTHONPATH=.
-          pytest
+          uv run pytest
