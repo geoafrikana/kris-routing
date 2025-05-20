@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Start PostgreSQL with Docker Compose
-        run: docker compose up -d
+        run: cd scripts && docker compose up -d
 
       - name: Wait for PostgreSQL to be ready
         run: |
@@ -55,3 +55,11 @@ jobs:
             --dbname $POSTGRES_DB \
             --username $POSTGRES_USER --clean \
               -W $PGPASSWORD
+      
+      - name: Run tests
+        run: |
+          cd backend
+          uv sync --dev
+          source .venv/Scripts/activate
+          export PYTHONPATH=.
+          pytest
