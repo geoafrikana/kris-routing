@@ -72,6 +72,6 @@ jobs:
           username: ${{ secrets.SERVER_USER}}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd ~/kris-Routing
+            cd ~/kris-routing
             git pull
             sudo systemctl restart kris

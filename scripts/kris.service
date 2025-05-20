@@ -1,0 +1,13 @@
+[Unit]
+Description=Kris Routing API service
+After=network.target
+
+[Service]
+ExecStart=/snap/bin/uv run uvicorn app.main:app --host 0.0.0.0 --port 80
+WorkingDirectory=/home/spatialnasir/kris-routing/backend
+Restart=always
+RestartSec=3
+Environment="PYTHONPATH=/home/spatialnasir/kris-routing/backend"
+
+[Install]
+WantedBy=multi-user.target
