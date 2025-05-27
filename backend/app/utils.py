@@ -26,7 +26,7 @@ class InputCoordinates(BaseModel):
     dest_lon: float
 
 class Route(BaseModel):
-    cost: float
+    duration_seconds: float
     route: Annotated[dict, BeforeValidator(json.loads)]
 
 def get_route_from_db(item: InputCoordinates):
@@ -45,4 +45,4 @@ def get_route_from_db(item: InputCoordinates):
             resp = cursor.fetchone()
             if not resp:
                 raise ValueError("No route found")
-            return resp  # returns (cost, route)
+            return resp

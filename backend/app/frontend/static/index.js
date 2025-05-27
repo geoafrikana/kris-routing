@@ -35,16 +35,20 @@ form.addEventListener('submit', function (e) {
             }
             return response.json()
         })
-        .then(data => {
+        .then(async data => {
+            // var line= turf.lineString(data.route.coordinates);
+            // console.log(line)
             let routeGeoJSON = {
                 "type": "Feature",
-                "properties": {"cost": data.cost},
+                "properties": {"duration_seconds": data.duration_seconds},
 
                 "geometry": {
                     type: data.route.type,
                     coordinates: data.route.coordinates
                 }
             };
+            // You can use other units like "miles". see https://turfjs.org/docs/api/length 
+            routeGeoJSON.properties.distance = await turf.length(routeGeoJSON, {units: 'kilometers'})
             const routeStyle = {
                 "color": "#4285F4",
                 "weight": 5
@@ -54,13 +58,31 @@ form.addEventListener('submit', function (e) {
                 map.removeLayer(displayedRoute);
             }
             displayedRoute =  L.geoJSON(routeGeoJSON, {
-                style: routeStyle
-            }).addTo(map);
+                style: routeStyle,
+                onEachFeature: function(feature, layer){
+                    console.log(feature.properties.distance)
+                    layer.bindPopup(
+                        `<b>Duration:</b> ${formatDuration(feature.properties.duration_seconds)}
+                        </br>
+                        <b>Distance:</b> ${feature.properties.distance.toFixed(2)} km`);
+                }
+            }).addTo(map)
             routeExist = true;
-            console.log("Route should be added")
         })
         .catch(error => {
             console.error('Error:', error);
             alert('Error finding route');
         });
 })
+
+const formatDuration=  function formatDuration(seconds) {
+  const totalSeconds = Math.floor(seconds);
+  const minutes = Math.floor(totalSeconds / 60);
+  const remainingSeconds = totalSeconds % 60;
+
+  if (minutes > 0) {
+    return `${minutes} minute${minutes !== 1 ? 's' : ''} ${remainingSeconds} second${remainingSeconds !== 1 ? 's' : ''}`;
+  } else {
+    return `${remainingSeconds} second${remainingSeconds !== 1 ? 's' : ''}`;
+  }
+}

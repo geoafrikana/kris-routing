@@ -40,8 +40,8 @@ async def create_item(item: InputCoordinates):
         "dest_lon": 11.399078
         }"""
     try:
-        cost, route = get_route_from_db(item)
-        return Route(cost=cost, route=route)
+        duration_seconds, route = get_route_from_db(item)
+        return Route(duration_seconds=duration_seconds, route=route)
     except Exception as e:
         return {"error": str(e)}
 
